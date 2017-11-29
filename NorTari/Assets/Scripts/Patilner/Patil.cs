@@ -9,6 +9,7 @@ public class Patil : MonoBehaviour {
     private float rotationRate;
     private Color _color;
     private PatilnerManager patilnerManager;
+    private Transform patilImageTransform;
     public Color color {
         get {
             return _color;
@@ -21,6 +22,7 @@ public class Patil : MonoBehaviour {
     }
 
     void Awake () {
+        patilImageTransform = transform.Find("Image");
         patilnerManager = transform.parent.parent.parent.GetComponent<PatilnerManager>();
         EventTrigger trigger = gameObject.AddComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
@@ -42,6 +44,6 @@ public class Patil : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.Rotate(0, 0, rotationRate);
+        patilImageTransform.Rotate(0, 0, rotationRate);
 	}
 }
