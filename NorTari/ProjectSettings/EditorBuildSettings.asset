@@ -24,5 +24,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Scene5.unity
     guid: 19dc14fc2b467f14695a1e865e6b5a7f
   - enabled: 1
+<<<<<<< HEAD
     path: Assets/Scenes/SantasDuty_Mountains.unity
     guid: db46618abfda91540bf528767b1e4e51
+=======
+    path: Assets/Scenes/Patilner.unity
+    guid: c7dd2aa2b012ac1409efbb5d207a7e8f
+>>>>>>> 6dab7ddfcba2e900744c39f65064c1be63c85114
