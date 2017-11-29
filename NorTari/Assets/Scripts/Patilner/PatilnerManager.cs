@@ -127,6 +127,9 @@ public class PatilnerManager : MonoBehaviour {
 
     public void LostRound () {
         Debug.Log("YOU LOST");
+        currentLevel = 0;
+        levelRoundsWinCount = 0;
+        StartNewRound();
     }
 
     private void CheckChosenColor () {
