@@ -23,3 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene5.unity
     guid: 19dc14fc2b467f14695a1e865e6b5a7f
+  - enabled: 1
+    path: Assets/Scenes/Patilner.unity
+    guid: c7dd2aa2b012ac1409efbb5d207a7e8f
