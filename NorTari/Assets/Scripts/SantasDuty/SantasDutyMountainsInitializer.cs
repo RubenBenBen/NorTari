@@ -21,6 +21,10 @@ public class SantasDutyMountainsInitializer : MonoBehaviour {
 	public static int high_score = 0;
 
 	public static float canvas_scale;
+
+    public GameObject scoreCanvas;
+    public GameObject lifeIndicatorCanvas;
+
 	void Awake() {
 		
 		number_of_circles = 0;
@@ -40,8 +44,8 @@ public class SantasDutyMountainsInitializer : MonoBehaviour {
 
 		canvas_scale = gameObject.GetComponent<RectTransform> ().localScale.x;
 
-		GameObject.Find ("Score").gameObject.SetActive (true);
-		GameObject.Find ("LifeIndicator").gameObject.SetActive (true);
+        scoreCanvas.SetActive (true);
+		lifeIndicatorCanvas.SetActive (true);
 	}
 
 	void Start () {

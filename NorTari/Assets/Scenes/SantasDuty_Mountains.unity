@@ -1328,6 +1328,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planet: {fileID: 0}
   objects_to_scale: []
+  scoreCanvas: {fileID: 1280931000}
+  lifeIndicatorCanvas: {fileID: 1069392101}
 --- !u!114 &1074620022
 MonoBehaviour:
   m_ObjectHideFlags: 0
