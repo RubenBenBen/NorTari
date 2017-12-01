@@ -39,7 +39,7 @@ public class DifficultyIndicator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		score_bar.sizeDelta = new Vector2(40,40 * SantasDutyMountainsInitializer.score / SantasDutyMountainsInitializer.max_score);
+		score_bar.sizeDelta = new Vector2(40, 40 * SantasDutyMountainsInitializer.score / SantasDutyMountainsInitializer.max_score);
 		high_score_bar.sizeDelta = new Vector2(40,40 * SantasDutyMountainsInitializer.high_score / SantasDutyMountainsInitializer.max_score);
 	}
 }

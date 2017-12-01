@@ -36,14 +36,15 @@ public class LevelInfoManager : MonoBehaviour {
 
     private void InitDailyLevels () {
         dailyLevels = new string[dailyLevelsCount];
-        dailyLevels[0] = "Patilner";
+        dailyLevels[0] = "WalkingSnowmans";
         dailyLevels[1] = "SantasDuty_Mountains";
         dailyLevels[2] = "FlyingTurkeys";
+        dailyLevels[3] = "WalkingSnowmans";
     }
 
     private void InitBlitzLevels () {
         blitzLevels = new string[blitzCount][];
-		blitzLevels[0] = new string[]{ "SantasDuty_Mountains", "Scene3", "Scene4", "Scene5"};
+		blitzLevels[0] = new string[]{ "SantasDuty_Mountains", "Patilner", "Scene1", "Scene1"};
 
     }
 }
