@@ -44,7 +44,7 @@ public class LevelInfoManager : MonoBehaviour {
 
     private void InitBlitzLevels () {
         blitzLevels = new string[blitzCount][];
-		blitzLevels[0] = new string[]{ "SantasDuty_Mountains", "Patilner", "Scene1", "Scene1"};
+		blitzLevels[0] = new string[]{ "Scene1", "Scene1", "Scene1", "Scene1"};
 
     }
 }
