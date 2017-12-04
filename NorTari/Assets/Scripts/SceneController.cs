@@ -33,26 +33,82 @@ public class SceneController : MonoBehaviour {
     public MenuSceneManager menuSceneManager;
     public LevelInfoManager levelInfoManager;
     public GameObject[] blitzSceneCanvasArray;
-    public GameObject dailySceneCanvas;
 
     private bool reloadingInProgress;
 
-    public IEnumerator LoadDailyScene (string sceneName) {
-        AsyncOperation asyncLoadScene = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+    public IEnumerator LoadDailyScene () {
+        yield return StartCoroutine(LoadScene(levelInfoManager.dailyLevels[levelInfoManager.currentDayIndex], false));
+        menuSceneManager.dailyLoaded = true;
+        menuSceneManager.OnScenesLoaded();
+    }
+
+    public void OpenDailyScene () {
+        StartCoroutine(LoadScene(levelInfoManager.dailyLevels[levelInfoManager.currentDayIndex],
+            true));
+    }
+
+    private void ShowCanvasOfScene (Scene scene) {
+        GameObject[] objects = scene.GetRootGameObjects();
+        foreach (GameObject obj in objects) {
+            if (obj.name == "Canvas") {
+                obj.SetActive(true);
+                return;
+            }
+        }
+    }
+
+    private IEnumerator LoadScene (string sceneName, bool show) {
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        if (!scene.isLoaded) {
+            AsyncOperation asyncLoadScene = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            while (!asyncLoadScene.isDone) {
+                yield return null;
+            }
+            if (show) {
+                SceneManager.SetActiveScene(scene);
+                ShowCanvasOfScene(scene);
+            }
+        } else {
+            yield return StartCoroutine(ReloadScene(scene, true));
+        }
+    }
+
+    private IEnumerator ReloadScene (Scene scene, bool showCanvas) {
+        if (reloadingInProgress) {
+            yield break;
+        }
+        reloadingInProgress = true;
+        int currentSceneIndex = scene.buildIndex;
+        string currentSceneName = scene.name;
+
+        AsyncOperation asyncLoadScene = SceneManager.LoadSceneAsync(currentSceneName, LoadSceneMode.Additive);
         while (!asyncLoadScene.isDone) {
             yield return null;
         }
-        GameObject[] objects = SceneManager.GetSceneByName(sceneName).GetRootGameObjects();
-        foreach (GameObject obj in objects) {
-            if (obj.name == "Canvas") {
-                obj.SetActive(false);
-                dailySceneCanvas = obj;
-                break;
-            }
+
+        AsyncOperation asyncUnloadScene = SceneManager.UnloadSceneAsync(currentSceneIndex);
+        while (!asyncUnloadScene.isDone) {
+            yield return null;
         }
-        //Debug.Log("Daily Loaded");
-        menuSceneManager.dailyLoaded = true;
-        menuSceneManager.OnScenesLoaded();
+
+        Scene currentScene = SceneManager.GetSceneByName(currentSceneName);
+        if (showCanvas) {
+            SceneManager.SetActiveScene(currentScene);
+            ShowCanvasOfScene(currentScene);
+        }
+        reloadingInProgress = false;
+    }
+
+    public void HideCurrentScene () {
+        GameObject[] objects = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject obj in objects) {
+            obj.SetActive(false);
+        }
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("MenuScene"));
+    }
+
+    public void ReloadCurrentScene () {
+        StartCoroutine(ReloadScene(SceneManager.GetActiveScene(), true));
     }
 
     public IEnumerator LoadBlitzScenes (string[] sceneNames) {
@@ -74,54 +130,6 @@ public class SceneController : MonoBehaviour {
         }
         menuSceneManager.blitzLoaded = true;
         menuSceneManager.OnScenesLoaded();
-    }
-
-    public void OpenDailyScene () {
-        Scene dailyScene = SceneManager.GetSceneByName(levelInfoManager.dailyLevels[levelInfoManager.currentDayIndex]);
-        SceneManager.SetActiveScene(dailyScene);
-        dailySceneCanvas.SetActive(true);
-    }
-
-    public void HideCurrentScene () {
-        GameObject[] objects = SceneManager.GetActiveScene().GetRootGameObjects();
-        foreach (GameObject obj in objects) {
-            obj.SetActive(false);
-        }
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName("MenuScene"));
-    }
-
-    public void ReloadCurrentScene () {
-        StartCoroutine(ReloadActiveScene());
-    }
-
-    private IEnumerator ReloadActiveScene () {
-        if (reloadingInProgress) {
-            yield return null;
-        }
-        reloadingInProgress = true;
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        string currentSceneName = SceneManager.GetActiveScene().name;
-
-        AsyncOperation asyncLoadScene = SceneManager.LoadSceneAsync(currentSceneName, LoadSceneMode.Additive);
-        while (!asyncLoadScene.isDone) {
-            yield return null;
-        }
-
-        AsyncOperation asyncUnloadScene = SceneManager.UnloadSceneAsync(currentSceneIndex);
-        while (!asyncUnloadScene.isDone) {
-            yield return null;
-        }
-
-        Scene currentScene = SceneManager.GetSceneByName(currentSceneName);
-        GameObject[] objects = currentScene.GetRootGameObjects();
-        foreach (GameObject obj in objects) {
-            if (obj.name == "Canvas") {
-                obj.SetActive(true);
-                break;
-            }
-        }
-        SceneManager.SetActiveScene(currentScene);
-        reloadingInProgress = false;
     }
 
     public void OpenNextBlitzScene () {

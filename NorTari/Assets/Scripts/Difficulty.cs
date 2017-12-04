@@ -18,21 +18,24 @@ public class Difficulty {
     public Color MedalColor (Medal currMedal) {
         Color medalColor = new Color();
         switch (currMedal) {
+            case Medal.None:
+                medalColor = Color.white;
+                break;
             case Medal.Bronze:
-                medalColor = new Color(0.8f, 0.4f, 0.1f, 1.0f);
+                medalColor = StaticMethodsAndProperties.hexToColor("#CD7F32");
                 break;
 
             case Medal.Silver:
-                medalColor = new Color(0.6f, 0.6f, 0.7f, 1.0f);
+                medalColor = StaticMethodsAndProperties.hexToColor("#C0C0C0");
                 break;
 
             case Medal.Gold:
-                medalColor = new Color(1.0f, 1.0f, 0.0f, 1.0f);
+                medalColor = StaticMethodsAndProperties.hexToColor("#ffd700");
                 break;
 
             case Medal.Platinium:
             default:
-                medalColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                medalColor = StaticMethodsAndProperties.hexToColor("#e5e4e2");
                 break;
         }
         return medalColor;

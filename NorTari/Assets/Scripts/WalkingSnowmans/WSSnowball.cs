@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SnowBall : MonoBehaviour {
+public class WSSnowball : MonoBehaviour {
 
     float velocity;
     float width;
     Rigidbody2D rigidBody;
     float screenHeight;
-    public WalkingSnowmansManager walkingSnowmansManager;
+    public WSManager walkingSnowmansManager;
 
     void Awake () {
         velocity = 800;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WalkingSnowmansManager : MonoBehaviour {
+public class WSManager : MonoBehaviour {
 
     public GameObject badSnowmanPrototype;
     public GameObject goodSnowmanPrototype;
@@ -14,6 +14,7 @@ public class WalkingSnowmansManager : MonoBehaviour {
     void Awake () {
         GetChildren();
         InitPrototypes();
+        medalProgressManager.gameObject.SetActive(true);
     }
 
     void Start () {
@@ -47,7 +48,7 @@ public class WalkingSnowmansManager : MonoBehaviour {
         object_instance.transform.SetParent(walkingObjectsContainer);
         object_instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, -posY);
         object_instance.transform.localScale = Vector3.one;
-        object_instance.GetComponent<Snowman>().fromRight = fromRight;
+        object_instance.GetComponent<WSSnowman>().fromRight = fromRight;
         if (fromRight) {
             object_instance.GetComponent<RectTransform>().Rotate(new Vector3(0, 180, 0));
         }
@@ -62,7 +63,7 @@ public class WalkingSnowmansManager : MonoBehaviour {
         object_instance.transform.SetParent(snowballContainer);
         object_instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, -prototypeHeight);
         object_instance.transform.localScale = Vector3.one;
-        object_instance.GetComponent<SnowBall>().walkingSnowmansManager = this;
+        object_instance.GetComponent<WSSnowball>().walkingSnowmansManager = this;
         object_instance.SetActive(true);
     }
 

@@ -37,10 +37,13 @@ public class ThrowPresent : MonoBehaviour {
 		object_instance.transform.rotation = gameObject.transform.rotation;
 		object_instance.transform.localScale = new Vector3 (SantasDutyMountainsInitializer.scale, SantasDutyMountainsInitializer.scale, SantasDutyMountainsInitializer.scale);
 		Rigidbody2D rb = object_instance.GetComponent<Rigidbody2D> ();
-		Vector2 rel_velocity = new Vector2 (tangent_sp, vert_sp) * SantasDutyMountainsInitializer.canvas_scale;
+        object_instance.SetActive(true);
+        Vector2 rel_velocity = new Vector2 (tangent_sp, vert_sp) * SantasDutyMountainsInitializer.canvas_scale;
 
 		rb.simulated = true;
 		rb.velocity = object_instance.transform.rotation * rel_velocity;
 		rb.angularVelocity = angular_speed;
-	}
+
+
+    }
 }

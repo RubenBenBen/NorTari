@@ -42,8 +42,6 @@ public class SantasDutyMountainsInitializer : MonoBehaviour {
 		max_score = number_of_buildings;
 		latent_num_of_lifes = number_of_lifes;
 
-		canvas_scale = gameObject.GetComponent<RectTransform> ().localScale.x;
-
         scoreCanvas.SetActive (true);
 		lifeIndicatorCanvas.SetActive (true);
 	}
@@ -52,10 +50,12 @@ public class SantasDutyMountainsInitializer : MonoBehaviour {
 		foreach (GameObject obj in objects_to_scale){
 			obj.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, scale);
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        canvas_scale = gameObject.GetComponent<RectTransform>().localScale.x;
+
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }

@@ -38,17 +38,27 @@ public class ScoreOnCollision : MonoBehaviour {
 		if (SantasDutyMountainsInitializer.score >= SantasDutyMountainsInitializer.max_score) {
 			SantasDutyMountainsInitializer.high_score = 0;
 			SantasDutyMountainsInitializer.difficulty = SantasDutyMountainsInitializer.difficulty + 1;
-			Scene loadedLevel = SceneManager.GetActiveScene ();
-			SceneManager.LoadScene (loadedLevel.buildIndex);
-		}
+            GameObject[] objects = SceneManager.GetSceneByName("MenuScene").GetRootGameObjects();
+            foreach (GameObject obj in objects) {
+                if (obj.name == "SceneController") {
+                    obj.GetComponent<SceneController>().ReloadCurrentScene();
+                    break;
+                }
+            }
+        }
 
 		Destroy (gameObject);
 		SantasDutyMountainsInitializer.latent_num_of_lifes -= 1;
 
 		if (SantasDutyMountainsInitializer.latent_num_of_lifes <= 0) {
-			Scene loadedLevel = SceneManager.GetActiveScene ();
-			SceneManager.LoadScene (loadedLevel.buildIndex);
-		}
+            GameObject[] objects = SceneManager.GetSceneByName("MenuScene").GetRootGameObjects();
+            foreach (GameObject obj in objects) {
+                if (obj.name == "SceneController") {
+                    obj.GetComponent<SceneController>().ReloadCurrentScene();
+                    break;
+                }
+            }
+        }
 
 	}
 }

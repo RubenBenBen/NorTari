@@ -10,7 +10,7 @@ public class MenuSceneManager : MonoBehaviour {
     public bool blitzLoaded;
 
     public void LoadScenes () {
-        StartCoroutine(sceneController.LoadDailyScene(levelInfoManager.dailyLevels[levelInfoManager.currentDayIndex]));
+        StartCoroutine(sceneController.LoadDailyScene());
         StartCoroutine(sceneController.LoadBlitzScenes(levelInfoManager.blitzLevels[levelInfoManager.currentDayIndex]));
     }
 

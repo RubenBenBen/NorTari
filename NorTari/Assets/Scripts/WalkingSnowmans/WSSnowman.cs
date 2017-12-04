@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Snowman : MonoBehaviour {
+public class WSSnowman : MonoBehaviour {
 
     public bool fromRight;
     float velocity;
