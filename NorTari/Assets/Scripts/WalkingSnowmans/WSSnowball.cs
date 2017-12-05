@@ -12,7 +12,7 @@ public class WSSnowball : MonoBehaviour {
     public WSManager walkingSnowmansManager;
 
     void Awake () {
-        velocity = 800;
+        velocity = Screen.height * 1.25f;
         screenHeight = Screen.height;
         width = GetComponent<RectTransform>().rect.width;
         rigidBody = GetComponent<Rigidbody2D>();
@@ -24,6 +24,7 @@ public class WSSnowball : MonoBehaviour {
         transform.position = new Vector2(transform.position.x, transform.position.y + velocity * Time.deltaTime);
         if (transform.position.y > screenHeight + width) {
             Destroy(gameObject);
+            walkingSnowmansManager.MissedSnowball();
         }
     }
 
@@ -31,7 +32,7 @@ public class WSSnowball : MonoBehaviour {
         if (collider.gameObject.tag == "BadSnowman" || collider.gameObject.tag == "GoodSnowman") {
             Destroy(collider.gameObject);
             Destroy(gameObject);
-            walkingSnowmansManager.SnowmanDestroyed();
+            walkingSnowmansManager.SnowmanDestroyed(collider.gameObject.tag);
         }
     }
 }

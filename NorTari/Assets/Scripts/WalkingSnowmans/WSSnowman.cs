@@ -5,13 +5,14 @@ using UnityEngine;
 public class WSSnowman : MonoBehaviour {
 
     public bool fromRight;
-    float velocity;
+    public float velocity;
     float screenWidth;
     float width;
+    public WSManager walkingSnowmansManager;
 
     void Awake () {
         int sign = fromRight ? -1 : 1;
-        velocity = Random.Range(200, 350) * sign;
+        velocity *= sign;
         screenWidth = Screen.width;
         width = GetComponent<RectTransform>().rect.width;
     }
@@ -21,6 +22,7 @@ public class WSSnowman : MonoBehaviour {
         transform.position = new Vector2(transform.position.x + velocity * Time.deltaTime, transform.position.y);
         if ((!fromRight && transform.position.x > screenWidth + width / 2) || ( fromRight && transform.position.x < - width / 2 )) {
             Destroy(gameObject);
+            walkingSnowmansManager.MissedSnowman(gameObject.tag);
         }
 	}
 }

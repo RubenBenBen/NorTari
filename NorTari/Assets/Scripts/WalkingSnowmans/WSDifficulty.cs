@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Difficulty {
+public class WSDifficulty {
 
     public int[] scoresToReachMedals;
+    public int[] lifeCountToReachMedals;
+    public int[] snowballCountToReachMedals;
     public Medal currentMedal;
 
     public enum Medal {
