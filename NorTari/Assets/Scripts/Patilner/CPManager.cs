@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PatilnerManager : MonoBehaviour {
+public class CPManager : MonoBehaviour {
 
     private Transform[] patilRows;
-    public static int currentLevel;
 
-    private int levelRoundsWinCount;
-    private int roundsToWin = 5;
     private LineTimer lineTimer;
 
     private bool chooseEnabled;
@@ -17,6 +14,8 @@ public class PatilnerManager : MonoBehaviour {
     private Color[] patilColorsArray;
 
     private Color[] avalaibleColors;
+
+    private CPMedalProgressManager medalProgressManager;
 
     private Color _chosenColor;
     public Color chosenColor {
@@ -40,6 +39,7 @@ public class PatilnerManager : MonoBehaviour {
             patilRows[i] = patilContainer.GetChild(i);
         }
         lineTimer = transform.Find("LineTimer").GetComponent<LineTimer>();
+        medalProgressManager = transform.Find("MedalProgressManager").GetComponent<CPMedalProgressManager>();
     }
 
     private void InitAvailableColors () {
@@ -58,9 +58,11 @@ public class PatilnerManager : MonoBehaviour {
 
     void Awake () {
         GetChildren();
-        currentLevel = 0;
-        levelRoundsWinCount = 0;
         InitAvailableColors();
+
+        medalProgressManager.SetDifficulty(new int[] { 5, 5, 5, 5 }, new int[] { 2, 2, 2, 2 });
+        medalProgressManager.gameObject.SetActive(true);
+        transform.Find("LifeCount").gameObject.SetActive(true);
     }
 
     void OnEnable () {
@@ -71,24 +73,31 @@ public class PatilnerManager : MonoBehaviour {
         chooseEnabled = false;
     }
 
-    private void StartNewRound () {
+    public void StartNewRound () {
         CreateNewRound();
         chooseEnabled = true;
-        lineTimer.ShowTimer(4);
+        lineTimer.ShowTimer(3);
     }
 
     private void CreateNewRound () {
-        if (currentLevel == 0) {
-            CreatePatilColorsArray(new int[] { 70, 20, 10 });
-        } else if (currentLevel == 1) {
-            CreatePatilColorsArray(new int[] { 60, 20, 10, 10 });
-        } else if (currentLevel == 2) {
-            CreatePatilColorsArray(new int[] { 40, 30, 20, 10 });
-        } else {
-            CreatePatilColorsArray(new int[] { 30, 20, 20, 10, 10, 10 });
+        switch (medalProgressManager.Difficulty().currentMedal) {
+            case CPDifficulty.Medal.None:
+                CreatePatilColorsArray(new int[] { 70, 20, 10 });
+                break;
+            case CPDifficulty.Medal.Bronze:
+                CreatePatilColorsArray(new int[] { 60, 20, 10, 10 });
+                break;
+            case CPDifficulty.Medal.Silver:
+                CreatePatilColorsArray(new int[] { 40, 30, 20, 10 });
+                break;
+            case CPDifficulty.Medal.Gold:
+            case CPDifficulty.Medal.Platinium:
+            default:
+                CreatePatilColorsArray(new int[] { 30, 20, 20, 10, 10, 10 });
+                break;
         }
+
         SetPatilColors();
-        Debug.Log("Creating New Round with Difficulty: " + currentLevel + " rounds win: " + levelRoundsWinCount);
     }
 
     private void CreatePatilColorsArray (int[] percents, int extraColorCount = 0) {
@@ -125,23 +134,15 @@ public class PatilnerManager : MonoBehaviour {
         chooseEnabled = true;
     }
 
-    public void LostRound () {
-        Debug.Log("YOU LOST");
-        currentLevel = 0;
-        levelRoundsWinCount = 0;
-        StartNewRound();
+    public void TimerEnded () {
+        medalProgressManager.ReduceLife();
     }
 
     private void CheckChosenColor () {
         if (chosenColor == trueColor) {
-            levelRoundsWinCount++;
-            if (levelRoundsWinCount >= roundsToWin) {
-                currentLevel++;
-                levelRoundsWinCount = 0;
-            }
-            StartNewRound();
+            medalProgressManager.Scored();
         } else {
-            LostRound();
+            medalProgressManager.ReduceLife();
         }
     }
 

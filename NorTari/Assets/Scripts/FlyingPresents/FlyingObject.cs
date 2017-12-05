@@ -5,10 +5,10 @@ using UnityEngine.EventSystems;
 
 public class FlyingObject : MonoBehaviour {
 
-    private FlyingTurkeysManager flyingTurkeysManager;
+    private FlyingPresents flyingPresentsManager;
 
     void Awake () {
-        flyingTurkeysManager = transform.parent.parent.GetComponent<FlyingTurkeysManager>();
+        flyingPresentsManager = transform.parent.parent.GetComponent<FlyingPresents>();
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.PointerDown;
@@ -19,7 +19,7 @@ public class FlyingObject : MonoBehaviour {
     }
 
     private void ObjectTapped () {
-        flyingTurkeysManager.ObjectTapped(tag);
+        flyingPresentsManager.ObjectTapped(tag);
         Destroy(gameObject);
     }
 }

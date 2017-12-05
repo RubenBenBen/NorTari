@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class LevelInfoManager : MonoBehaviour {
 
@@ -12,6 +14,8 @@ public class LevelInfoManager : MonoBehaviour {
     public int blitzLevelsCount;
     public int currentDayIndex;
     public int currentBlitzGameIndex;
+
+    public Text dayIndexText;
 
     public MenuSceneManager menuSceneManager;
 
@@ -36,15 +40,25 @@ public class LevelInfoManager : MonoBehaviour {
 
     private void InitDailyLevels () {
         dailyLevels = new string[dailyLevelsCount];
-        dailyLevels[0] = "WalkingSnowmans";
+        dailyLevels[0] = "Patilner";
         dailyLevels[1] = "SantasDuty_Mountains";
-        dailyLevels[2] = "FlyingTurkeys";
-        dailyLevels[3] = "WalkingSnowmans";
+        dailyLevels[2] = "WalkingSnowmans";
+        dailyLevels[3] = "FlyingPresents";
     }
 
     private void InitBlitzLevels () {
         blitzLevels = new string[blitzCount][];
-		blitzLevels[0] = new string[]{ "Scene1", "Scene1", "Scene1", "Scene1"};
+		blitzLevels[0] = new string[]{ "Scene1", "SantasDuty_Mountains", "WalkingSnowmans", "FlyingPresents" };
 
+    }
+
+    public void IncreateDayIndex () {
+        currentDayIndex++;
+        dayIndexText.text = currentDayIndex + "";
+    }
+
+    public void ResetDayIndex () {
+        currentDayIndex = 0;
+        dayIndexText.text = currentDayIndex + "";
     }
 }

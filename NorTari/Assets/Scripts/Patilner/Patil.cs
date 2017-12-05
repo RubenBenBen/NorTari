@@ -8,7 +8,7 @@ public class Patil : MonoBehaviour {
 
     private float rotationRate;
     private Color _color;
-    private PatilnerManager patilnerManager;
+    private CPManager patilnerManager;
     private Transform patilImageTransform;
     public Color color {
         get {
@@ -23,7 +23,7 @@ public class Patil : MonoBehaviour {
 
     void Awake () {
         patilImageTransform = transform.Find("Image");
-        patilnerManager = transform.parent.parent.parent.GetComponent<PatilnerManager>();
+        patilnerManager = transform.parent.parent.parent.GetComponent<CPManager>();
         EventTrigger trigger = gameObject.AddComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.PointerDown;

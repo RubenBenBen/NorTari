@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FlyingTurkeysManager : MonoBehaviour {
+public class FlyingPresents : MonoBehaviour {
 
 
-    public GameObject turkeyRightPrototype;
+    public GameObject presentPrototype;
     private Transform flyingObjectsContainer;
 
     void Awake () {
@@ -15,8 +15,8 @@ public class FlyingTurkeysManager : MonoBehaviour {
     }
 
     void Start () {
-        CreatePrototypeAtPositionY(turkeyRightPrototype, 0, true, 20000);
-        CreatePrototypeAtPositionY(turkeyRightPrototype, -150, false, 25000);
+        CreatePrototypeAtPositionY(presentPrototype, 0, true, 20000);
+        CreatePrototypeAtPositionY(presentPrototype, -150, false, 25000);
     }
 
     private void GetChildren () {

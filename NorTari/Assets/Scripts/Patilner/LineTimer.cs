@@ -7,12 +7,12 @@ public class LineTimer : MonoBehaviour {
     private float rate;
     private RectTransform rect;
     private bool timerIsOn;
-    private PatilnerManager patilnerManager;
+    private CPManager patilnerManager;
 
     void Awake () {
         rect = transform.GetComponent<RectTransform>();
         width = rect.sizeDelta.x;
-        patilnerManager = transform.parent.GetComponent<PatilnerManager>();
+        patilnerManager = transform.parent.GetComponent<CPManager>();
 
     }
 
@@ -30,7 +30,7 @@ public class LineTimer : MonoBehaviour {
         gameObject.SetActive(false);
         timerIsOn = false;
         rect.sizeDelta = new Vector2(width, rect.sizeDelta.y);
-        patilnerManager.LostRound();
+        patilnerManager.TimerEnded();
     }
 
     public void ShowTimer (float seconds) {
