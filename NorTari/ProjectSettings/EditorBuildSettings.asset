@@ -23,3 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FlyingPresents.unity
     guid: 4d74591bdf84c714fa648cdc07571d80
+  - enabled: 1
+    path: Assets/Scenes/SwapSacksScene.unity
+    guid: 4b84d41e8e70d5643b6ea5f999ade002

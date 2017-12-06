@@ -93,11 +93,11 @@ public class CPMedalProgressManager : MonoBehaviour {
     }
 
     public void ReduceLife() {
-        lifeCount--;
-        if (lifeCount < 0) {
-            LoseGame();
-        } else {
+        if (lifeCount > 0) {
+            lifeCount--;
             cpManager.StartNewRound();
+        } else {
+            LoseGame();
         }
     }
 

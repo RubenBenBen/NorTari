@@ -4,19 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class WSMedalProgressManager : MonoBehaviour {
+public class FPMedalProgressManager : MonoBehaviour {
 
     private Image difficulty_ind_image;
     private RectTransform high_score_bar;
     private RectTransform score_bar;
-    private static WSDifficulty currentDifficulty;
+    private static FPDifficulty currentDifficulty;
+
+    private FPManager fpManager;
     private bool roundEnded;
 
     private int currentScore = 0;
     private static int currentMedalHighScore;
 
     public Text lifeCountText;
-    public Text snowballCountText;
     private int _lifeCount;
     public int lifeCount {
         set {
@@ -28,29 +29,16 @@ public class WSMedalProgressManager : MonoBehaviour {
         }
     }
 
-    private int _snowballCount;
-    public int snowballCount {
-        set {
-            _snowballCount = value;
-            snowballCountText.text = value + "";
-        }
-        get {
-            return _snowballCount;
-        }
-    }
-
     void Awake () {
         GetChildren();
         UpdateUI();
         lifeCount = currentDifficulty.lifeCountToReachMedals[Mathf.Min((int) currentDifficulty.currentMedal,
             currentDifficulty.lifeCountToReachMedals.Length - 1)];
-        snowballCount = currentDifficulty.snowballCountToReachMedals[Mathf.Min((int) currentDifficulty.currentMedal,
-        currentDifficulty.snowballCountToReachMedals.Length - 1)];
         //QualitySettings.vSyncCount = 0;
         //Application.targetFrameRate = 10;
     }
 
-    public WSDifficulty Difficulty () {
+    public FPDifficulty Difficulty () {
         return currentDifficulty;
     }
 
@@ -58,18 +46,18 @@ public class WSMedalProgressManager : MonoBehaviour {
         high_score_bar = transform.Find("HighScore").GetComponent<RectTransform>();
         score_bar = transform.Find("CurrentScore").GetComponent<RectTransform>();
         difficulty_ind_image = transform.Find("CurrentMedal").GetComponent<Image>();
+        fpManager = transform.parent.GetComponent<FPManager>();
     }
 
-    public void SetDifficulty (int[] scoresToReachMedals, int[] lifeCountToReachMedals, int[] snowballCountToReachMedals) {
+    public void SetDifficulty (int[] scoresToReachMedals, int[] lifeCountToReachMedals) {
         if (currentDifficulty != null) {
             return;
         }
 
-        currentDifficulty = new WSDifficulty();
-        currentDifficulty.currentMedal = WSDifficulty.Medal.None;
+        currentDifficulty = new FPDifficulty();
+        currentDifficulty.currentMedal = FPDifficulty.Medal.None;
         currentDifficulty.scoresToReachMedals = scoresToReachMedals;
         currentDifficulty.lifeCountToReachMedals = lifeCountToReachMedals;
-        currentDifficulty.snowballCountToReachMedals = snowballCountToReachMedals;
     }
 
     private void UpdateUI () {
@@ -112,10 +100,6 @@ public class WSMedalProgressManager : MonoBehaviour {
         }
     }
 
-    public void ReduceSnowballCount () {
-        snowballCount--;
-    }
-
     private void RoundWin () {
         if (roundEnded) {
             return;
@@ -136,10 +120,11 @@ public class WSMedalProgressManager : MonoBehaviour {
 
     public void Scored () {
         currentScore++;
+        UpdateUI();
         currentMedalHighScore = Mathf.Max(currentScore, currentMedalHighScore);
         if (currentScore == currentDifficulty.scoresToReachMedals[Mathf.Min((int) currentDifficulty.currentMedal,
                             currentDifficulty.scoresToReachMedals.Length - 1)]) {
-            if (currentDifficulty.currentMedal != WSDifficulty.Medal.Platinium) {
+            if (currentDifficulty.currentMedal != FPDifficulty.Medal.Platinium) {
                 //New medal win
                 RoundWin();
             } else {
@@ -153,7 +138,6 @@ public class WSMedalProgressManager : MonoBehaviour {
                 }
             }
         }
-        UpdateUI();
     }
 
 }

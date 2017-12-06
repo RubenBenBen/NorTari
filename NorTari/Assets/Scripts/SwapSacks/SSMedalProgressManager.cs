@@ -4,21 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class WSMedalProgressManager : MonoBehaviour {
+public class SSMedalProgressManager : MonoBehaviour {
 
     private Image difficulty_ind_image;
     private RectTransform high_score_bar;
     private RectTransform score_bar;
-    private static WSDifficulty currentDifficulty;
+    private static SSDifficulty currentDifficulty;
+
+    private SSManager ssManager;
     private bool roundEnded;
 
-    private int currentScore = 0;
+
+    private static bool isNewRound;
+    private static int currentScore;
     private static int currentMedalHighScore;
 
     public Text lifeCountText;
-    public Text snowballCountText;
-    private int _lifeCount;
-    public int lifeCount {
+    private static int _lifeCount;
+    private int lifeCount {
         set {
             _lifeCount = value;
             lifeCountText.text = value + "";
@@ -28,29 +31,20 @@ public class WSMedalProgressManager : MonoBehaviour {
         }
     }
 
-    private int _snowballCount;
-    public int snowballCount {
-        set {
-            _snowballCount = value;
-            snowballCountText.text = value + "";
-        }
-        get {
-            return _snowballCount;
-        }
-    }
-
     void Awake () {
         GetChildren();
         UpdateUI();
-        lifeCount = currentDifficulty.lifeCountToReachMedals[Mathf.Min((int) currentDifficulty.currentMedal,
-            currentDifficulty.lifeCountToReachMedals.Length - 1)];
-        snowballCount = currentDifficulty.snowballCountToReachMedals[Mathf.Min((int) currentDifficulty.currentMedal,
-        currentDifficulty.snowballCountToReachMedals.Length - 1)];
+        if (!isNewRound) {
+            isNewRound = true;
+            lifeCount = currentDifficulty.lifeCountToReachMedals[Mathf.Min((int) currentDifficulty.currentMedal,
+                currentDifficulty.lifeCountToReachMedals.Length - 1)];
+        }
+        lifeCountText.text = lifeCount + "";
         //QualitySettings.vSyncCount = 0;
         //Application.targetFrameRate = 10;
     }
 
-    public WSDifficulty Difficulty () {
+    public SSDifficulty Difficulty () {
         return currentDifficulty;
     }
 
@@ -58,18 +52,18 @@ public class WSMedalProgressManager : MonoBehaviour {
         high_score_bar = transform.Find("HighScore").GetComponent<RectTransform>();
         score_bar = transform.Find("CurrentScore").GetComponent<RectTransform>();
         difficulty_ind_image = transform.Find("CurrentMedal").GetComponent<Image>();
+        ssManager = transform.parent.GetComponent<SSManager>();
     }
 
-    public void SetDifficulty (int[] scoresToReachMedals, int[] lifeCountToReachMedals, int[] snowballCountToReachMedals) {
+    public void SetDifficulty (int[] scoresToReachMedals, int[] lifeCountToReachMedals) {
         if (currentDifficulty != null) {
             return;
         }
 
-        currentDifficulty = new WSDifficulty();
-        currentDifficulty.currentMedal = WSDifficulty.Medal.None;
+        currentDifficulty = new SSDifficulty();
+        currentDifficulty.currentMedal = SSDifficulty.Medal.None;
         currentDifficulty.scoresToReachMedals = scoresToReachMedals;
         currentDifficulty.lifeCountToReachMedals = lifeCountToReachMedals;
-        currentDifficulty.snowballCountToReachMedals = snowballCountToReachMedals;
     }
 
     private void UpdateUI () {
@@ -93,7 +87,8 @@ public class WSMedalProgressManager : MonoBehaviour {
         }
 
         roundEnded = true;
-
+        isNewRound = false;
+        currentScore = 0;
         Debug.Log("GAME OVER");
         GameObject[] objects = SceneManager.GetSceneByName("MenuScene").GetRootGameObjects();
         foreach (GameObject obj in objects) {
@@ -107,13 +102,16 @@ public class WSMedalProgressManager : MonoBehaviour {
     public void ReduceLife() {
         if (lifeCount > 0) {
             lifeCount--;
+            GameObject[] objects = SceneManager.GetSceneByName("MenuScene").GetRootGameObjects();
+            foreach (GameObject obj in objects) {
+                if (obj.name == "SceneController") {
+                    obj.GetComponent<SceneController>().ReloadCurrentScene();
+                    break;
+                }
+            }
         } else {
             LoseGame();
         }
-    }
-
-    public void ReduceSnowballCount () {
-        snowballCount--;
     }
 
     private void RoundWin () {
@@ -136,10 +134,11 @@ public class WSMedalProgressManager : MonoBehaviour {
 
     public void Scored () {
         currentScore++;
+        UpdateUI();
         currentMedalHighScore = Mathf.Max(currentScore, currentMedalHighScore);
         if (currentScore == currentDifficulty.scoresToReachMedals[Mathf.Min((int) currentDifficulty.currentMedal,
                             currentDifficulty.scoresToReachMedals.Length - 1)]) {
-            if (currentDifficulty.currentMedal != WSDifficulty.Medal.Platinium) {
+            if (currentDifficulty.currentMedal != SSDifficulty.Medal.Platinium) {
                 //New medal win
                 RoundWin();
             } else {
@@ -152,8 +151,15 @@ public class WSMedalProgressManager : MonoBehaviour {
                     }
                 }
             }
+        } else {
+            GameObject[] objects = SceneManager.GetSceneByName("MenuScene").GetRootGameObjects();
+            foreach (GameObject obj in objects) {
+                if (obj.name == "SceneController") {
+                    obj.GetComponent<SceneController>().ReloadCurrentScene();
+                    break;
+                }
+            }
         }
-        UpdateUI();
     }
 
 }

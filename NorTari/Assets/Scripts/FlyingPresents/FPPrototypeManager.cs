@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PrototypeManager : MonoBehaviour {
+public class FPPrototypeManager : MonoBehaviour {
 
     public void InitPrototype () {
         SpriteRenderer spriteRenderer = transform.Find("SpriteRenderer").GetComponent<SpriteRenderer>();
